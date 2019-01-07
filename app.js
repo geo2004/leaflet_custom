@@ -232,7 +232,27 @@ this.tileLayer = L.tileLayer(
 );
 this.tileLayer.addTo(this.map);
             },
-  initLayers() {},
-    layerChanged(layerId, active) { }
+  initLayers() {this.layers.forEach((layer) => {
+   const markerFeatures = layer.features.filter(feature => feature.type === 'marker');
+const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
+    markerFeatures.forEach((feature) => {
+  feature.leafletObject = L.marker(feature.coords)
+    .bindPopup(feature.name);
+});
+    polygonFeatures.forEach((feature) => {
+  feature.leafletObject = L.polygon(feature.coords)
+    .bindPopup(feature.name);
+});
+  
+  },
+    
+    layerChanged(layerId, active) {const layer = this.layers.find(layer => layer.id === layerId);
+         layer.features.forEach((feature) => {
+ if (active) {
+  feature.leafletObject.addTo(this.map);
+} else {
+  feature.leafletObject.removeFrom(this.map);
+}
+});      }
 },
 });
