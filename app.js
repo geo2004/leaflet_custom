@@ -233,5 +233,6 @@ this.tileLayer = L.tileLayer(
 this.tileLayer.addTo(this.map);
             },
   initLayers() {},
+    layerChanged(layerId, active) { }
 },
 });
